@@ -1,0 +1,30 @@
+spring:
+  mvc:
+    view:
+      prefix: /WEB-INF/views/
+      suffix: .jsp
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/blog?characterEncoding=utf8&serverTimezone=Asia/Seoul
+    username: cyon13
+    password: 11111
+
+  jpa:
+    open-in-view: true
+    hibernate:
+      ddl-auto: create  #처음에만 create 해놓고, 테이블이 생성되고나면 update로 바꿔줘야한다.
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+        # Entity를 만들때 변수명 그대로 필드에 넣어달라
+        # SpringPhysicalNamingStrategy를 사용하게 되면 my_email 과 같이 _ 를 넣어서 만들어준다
+      use-new-id-generator-mappings: false  # JPA가 사용하는 기본 넘버링 방식을 따라가지 않음
+    show-sql: true #console에 sql 출력
+    properties:
+      hibernate.format_sql: true #sql을 예쁘게 정렬시켜서 보여줌
+      
+  jackson:
+    serialization:
+      fail-on-empty-beans: false   
+   
+       

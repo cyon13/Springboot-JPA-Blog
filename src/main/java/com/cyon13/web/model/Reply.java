@@ -1,4 +1,4 @@
-package com.cyon13.web.entity;
+package com.cyon13.web.model;
 
 import java.sql.Timestamp;
 

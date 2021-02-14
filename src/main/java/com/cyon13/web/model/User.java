@@ -1,15 +1,18 @@
-package com.cyon13.web.entity;
+package com.cyon13.web.model;
 
 import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.DynamicInsert;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,6 +24,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder // 빌드패턴!!
+// @DynamicInsert // insert할 때 null인 컬럼은 제외해서 insert해준다
 // ORM -> Java(다른언어) Object -> 테이블로 매핑해주는 기술
 @Entity // User 클래스가 MySQL에 테이블이 생성이 된다.
 public class User {
@@ -38,8 +42,10 @@ public class User {
 	@Column(nullable = false,length = 50)
 	private String email; 
 	
-	@ColumnDefault("'user'")  // '' 꼭 써줘야한다
-	private String role; // Enum을 쓰는게 좋다. // admin, user, manager
+	// @ColumnDefault("'user'")
+	// DB는 RoleType이라는게 없다
+	@Enumerated(EnumType.STRING)
+	private RoleType role; // Enum을 쓰는게 좋다. // ADMIN,USER
 	
 	@CreationTimestamp // 시간이 자동입력
 	private Timestamp createDate;

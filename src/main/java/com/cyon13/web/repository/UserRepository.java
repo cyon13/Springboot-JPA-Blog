@@ -1,0 +1,13 @@
+package com.cyon13.web.repository;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.cyon13.web.model.User;
+
+// DAO
+// 자동으로 bean 등록이 된다.
+//@Repository // 생략 가능하다
+public interface UserRepository extends JpaRepository<User, Integer> { 
+// 해당 Repository 는 User가 관리하는 Repository이다. 그리고 User의 PrimaryKey는 Integer다.
+	
+}
