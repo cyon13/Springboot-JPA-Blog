@@ -13,7 +13,7 @@ spring:
   jpa:
     open-in-view: true
     hibernate:
-      ddl-auto: create  #처음에만 create 해놓고, 테이블이 생성되고나면 update로 바꿔줘야한다.
+      ddl-auto: update  #처음에만 create 해놓고, 테이블이 생성되고나면 update로 바꿔줘야한다.
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
         # Entity를 만들때 변수명 그대로 필드에 넣어달라
