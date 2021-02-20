@@ -14,7 +14,7 @@ window.addEventListener("load", () => {
 			email: email.value
 		}
 		console.log(data);
-		fetch('/api/user', {
+		fetch('/auth/joinProc', {
 			method: 'post',
 			headers: {
 				'Content-Type': 'application/json; charset=utf-8', // body데이터가 어떤 타입인지(MIME) 
