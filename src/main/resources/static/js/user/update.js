@@ -1,32 +1,32 @@
 window.addEventListener("load", () => {
-	let btnSave = document.querySelector("#btn-save");
-	let username = document.querySelector("#username");
+	let btnUpdate = document.querySelector("#btn-update");
+	let id = document.querySelector("#id");
 	let password = document.querySelector("#password");
 	let email = document.querySelector("#email");
-	btnSave.addEventListener("click", () => {
+	btnUpdate.addEventListener("click", () => {
 		if (username.value == "" || password.value == "" || email.value == "") {
 			alert("양식을 다 채워주세요");
 			return false;
 			}
-		save();
+		update();
 	})
 
-	function save() {
+	function update() {
 		let data = {
-			username: username.value,
+			id : id.value,
 			password: password.value,
 			email: email.value
 		}
 		console.log(data);
-		fetch('/auth/joinProc', {
-			method: 'post',
+		fetch('/user', {
+			method: 'put',
 			headers: {
 				'Content-Type': 'application/json; charset=utf-8', // body데이터가 어떤 타입인지(MIME) 
 			},
 			body: JSON.stringify(data), // http body 데이터
 		})
 			.then(res => {
-				alert("회원가입이 완료되었습니다.");
+				alert("회원수정이 완료되었습니다.");
 				location.href = "/"  // redirect
 				return res.json();
 			}) // 요청을 서버로해서 응답이 왔을 때 기본적으로 모든 것이 문자열(생긴게 json이라면=> javascript오브젝트로 변경)

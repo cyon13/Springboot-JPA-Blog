@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,6 +32,13 @@ public class UserApiController {
 		return new ResponseDto<Integer>(HttpStatus.OK.value(),1); // 자바오브젝트를 JSON으로 변경(Jackson)
 	}
 	
+	
+	@PutMapping("/user")
+	public ResponseDto<Integer> update(@RequestBody User user) {
+		
+		userService.update(user);
+		return new ResponseDto<Integer>(HttpStatus.OK.value(),1);
+	}
 	// security 이용한 로그인
 	
 	

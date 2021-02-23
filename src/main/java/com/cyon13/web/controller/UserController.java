@@ -21,4 +21,12 @@ public class UserController {
 		
 		return "user/joinForm";
 	}
+	
+	
+	@GetMapping("/user/updateForm")
+	public String updateForm() {
+		
+		return "user/updateForm";
+	}
+
 }

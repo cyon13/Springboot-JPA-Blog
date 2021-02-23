@@ -19,7 +19,7 @@ spring:
         # Entity를 만들때 변수명 그대로 필드에 넣어달라
         # SpringPhysicalNamingStrategy를 사용하게 되면 my_email 과 같이 _ 를 넣어서 만들어준다
       use-new-id-generator-mappings: false  # JPA가 사용하는 기본 넘버링 방식을 따라가지 않음
-    show-sql: true #console에 sql 출력
+   # show-sql: true #console에 sql 출력
     properties:
       hibernate.format_sql: true #sql을 예쁘게 정렬시켜서 보여줌
       
