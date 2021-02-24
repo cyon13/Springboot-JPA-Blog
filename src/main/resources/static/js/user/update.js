@@ -1,6 +1,7 @@
 window.addEventListener("load", () => {
 	let btnUpdate = document.querySelector("#btn-update");
 	let id = document.querySelector("#id");
+	let username = document.querySelector("#username");
 	let password = document.querySelector("#password");
 	let email = document.querySelector("#email");
 	btnUpdate.addEventListener("click", () => {
@@ -14,6 +15,7 @@ window.addEventListener("load", () => {
 	function update() {
 		let data = {
 			id : id.value,
+			username : username.value,
 			password: password.value,
 			email: email.value
 		}
