@@ -47,7 +47,7 @@ public class Board {
 	private User user; // DB는 오브젝트를 저장할 수 없다.(FK를 사용), 자바는 오브젝트를 저장할 수 있다.
 	
 	@OneToMany(mappedBy = "board", fetch = FetchType.EAGER) // mappedBy 연관관계의 주인이 아니다(난 FK가 아니에요) DB에 컬럼을 만들지 마세요
-	private List<Reply> reply; // 1개의 board에 여러개의 댓글이 달릴 수 있으므로 List로 불러온다
+	private List<Reply> replys; // 1개의 board에 여러개의 댓글이 달릴 수 있으므로 List로 불러온다
 	
 	@CreationTimestamp
 	private Timestamp createDate;

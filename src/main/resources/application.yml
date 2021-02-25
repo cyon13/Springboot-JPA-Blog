@@ -27,4 +27,6 @@ spring:
     serialization:
       fail-on-empty-beans: false   
    
-       
+
+cyon13:
+  key: cyon1234     #oAuth 사용자들이 사용하는 비밀번호 

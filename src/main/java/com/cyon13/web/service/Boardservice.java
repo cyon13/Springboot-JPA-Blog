@@ -14,6 +14,7 @@ import com.cyon13.web.model.Board;
 import com.cyon13.web.model.RoleType;
 import com.cyon13.web.model.User;
 import com.cyon13.web.repository.BoardRepository;
+import com.cyon13.web.repository.ReplyRepository;
 import com.cyon13.web.repository.UserRepository;
 
 // 스프링이 컴포넌트 스캔을 통해서 Bean에 등록을 해줌.
@@ -22,6 +23,9 @@ public class Boardservice {
 
 	@Autowired
 	private BoardRepository boardRepository;
+	
+	@Autowired
+	private ReplyRepository replyRepository;
 	
 	@Transactional
 	public void write(Board board,User user) { // title, content

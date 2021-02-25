@@ -1,10 +1,17 @@
 package com.cyon13.web.controller;
 
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -14,7 +21,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
+import com.cyon13.web.model.KakaoProfile;
 import com.cyon13.web.model.OAuthToken;
+import com.cyon13.web.model.User;
 import com.cyon13.web.service.Userservice;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -26,8 +35,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Controller
 public class UserController {
 	
+	@Value("${cyon13.key}")
+	private String cyon13Key;
+	
 	@Autowired
 	private Userservice userService;
+	
+	@Autowired
+	private AuthenticationManager authenticationManager;
 	
 	@GetMapping("/auth/loginForm")
 	public String loginForm() {
@@ -42,7 +57,6 @@ public class UserController {
 	}
 	
 	@GetMapping("/auth/kakao/callback")
-	@ResponseBody //Data를 리턴해주는 컨트롤러 함수
 	public String kakaoCallback(@RequestParam String code) { 
 		
 		// POST방식으로 key=value 데이터를 요청(카카오쪽으로)
@@ -117,11 +131,47 @@ public class UserController {
 				kakaoProfileRequest, // http 바디+ http 헤더 값
 				String.class     // 응답을 받을 타입 설정
 				);
-		System.out.println(response2.getBody());
+		//System.out.println(response2.getBody());
 
+		ObjectMapper objectMapper2 = new ObjectMapper();
+		KakaoProfile kakaoProfile = null;
+		try {
+			kakaoProfile = objectMapper2.readValue(response2.getBody(), KakaoProfile.class);
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonProcessingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println("카카오 아이디(번호): "+kakaoProfile.getId());
+		System.out.println("카카오 이메일: "+kakaoProfile.getKakao_account().getEmail());
+		System.out.println("블로그서버 유저네임: "+kakaoProfile.getKakao_account().getEmail()+"_"+kakaoProfile.getId());
+		System.out.println("블로그서버 이메일: "+kakaoProfile.getKakao_account().getEmail());
+		//UUID garbagePassword = UUID.randomUUID();
+		System.out.println("블로그서버 패스워드: "+ cyon13Key);
 		
+		User kakaoUser = User.builder()
+				.username(kakaoProfile.getKakao_account().getEmail()+"_"+kakaoProfile.getId())
+				.password(cyon13Key)
+				.email(kakaoProfile.getKakao_account().getEmail())
+				.oauth("kakao")
+				.build();
 		
-		return response2.getBody();
+		// 가입자 혹은 비가입자 체크해서 처리
+		User originUser = userService.findUser(kakaoUser.getUsername());
+		
+		if(originUser.getUsername()==null) {
+			System.out.println("기존 회원이 아닙니다!");
+			userService.join(kakaoUser);
+		}
+		
+		// 로그인 처리
+		// 세션 등록
+		Authentication authentication =  authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(kakaoUser.getUsername(), cyon13Key)); // authenticationManager에 username, password를 담은 AuthenticationToken을 넘겨주면 인증해서 Authentication 객체를 만들어준다. 
+		SecurityContextHolder.getContext().setAuthentication(authentication); // 만들어진 Authentication 객체를 SecurityContext에 저장시킨다.
+		
+		return "redirect:/";
 	}
 	
 	@GetMapping("/user/updateForm")
