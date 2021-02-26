@@ -7,15 +7,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.firewall.RequestRejectedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.cyon13.web.dto.ReplySaveRequestDto;
 import com.cyon13.web.model.Board;
+import com.cyon13.web.model.Reply;
 import com.cyon13.web.model.RoleType;
 import com.cyon13.web.model.User;
 import com.cyon13.web.repository.BoardRepository;
 import com.cyon13.web.repository.ReplyRepository;
 import com.cyon13.web.repository.UserRepository;
+
+import lombok.RequiredArgsConstructor;
 
 // 스프링이 컴포넌트 스캔을 통해서 Bean에 등록을 해줌.
 @Service
@@ -26,6 +31,9 @@ public class Boardservice {
 	
 	@Autowired
 	private ReplyRepository replyRepository;
+	
+	@Autowired
+	private UserRepository userRepository;
 	
 	@Transactional
 	public void write(Board board,User user) { // title, content
@@ -59,6 +67,17 @@ public class Boardservice {
 		board.setTitle(requestBoard.getTitle());
 		board.setContent(requestBoard.getContent());
 		// 해당 함수로 종료시(Service가 종료될 때) 트랜잭션이 종료된다. 이때 더티체킹 - 자동 업데이트가 됨. db flush
+	}
+	
+	@Transactional
+	public int replySave(ReplySaveRequestDto replySaveRequestDto) {
+		int result = replyRepository.mSave(replySaveRequestDto.getUserId(),replySaveRequestDto.getBoardId(), replySaveRequestDto.getContent());
+		return result;
+	}
+
+	@Transactional
+	public void delReply(int replyId) {
+		replyRepository.deleteById(replyId);
 	}
 
 

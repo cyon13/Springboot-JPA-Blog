@@ -2,7 +2,7 @@ window.addEventListener("load", () => {
 	let btnSave = document.querySelector("#btn-save");
 	let title = document.querySelector("#title");
 	let content = document.querySelector("#content");
-	
+
 	btnSave.addEventListener("click", () => {
 		save();
 	})

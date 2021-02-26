@@ -13,6 +13,8 @@ import javax.persistence.OneToOne;
 
 import org.hibernate.annotations.CreationTimestamp;
 
+import com.cyon13.web.dto.ReplySaveRequestDto;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -42,4 +44,5 @@ public class Reply {
 	
 	@CreationTimestamp
 	private Timestamp createDate;
+	
 }

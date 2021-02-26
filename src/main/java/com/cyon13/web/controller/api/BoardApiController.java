@@ -16,8 +16,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cyon13.web.config.auth.PrincipalDetail;
+import com.cyon13.web.dto.ReplySaveRequestDto;
 import com.cyon13.web.dto.ResponseDto;
 import com.cyon13.web.model.Board;
+import com.cyon13.web.model.Reply;
 import com.cyon13.web.model.RoleType;
 import com.cyon13.web.model.User;
 import com.cyon13.web.service.Boardservice;
@@ -49,5 +51,18 @@ public class BoardApiController {
 		boardService.update(id,board);
 		return new ResponseDto<Integer>(HttpStatus.OK.value(),1); // 자바오브젝트를 JSON으로 변경(Jackson)
 	}	
+	
+	@PostMapping("/api/board/{boardId}/reply")
+	public ResponseDto<Integer> replySave(@RequestBody ReplySaveRequestDto replySaveRequestDto) {
+
+		boardService.replySave(replySaveRequestDto);
+		return new ResponseDto<Integer>(HttpStatus.OK.value(),1); // 자바오브젝트를 JSON으로 변경(Jackson)
+	}
+	
+	@DeleteMapping("/api/board/reply/{replyId}")
+	public ResponseDto<Integer> deleteByReplyId(@PathVariable int replyId) {
+		boardService.delReply(replyId);
+		return new ResponseDto<Integer>(HttpStatus.OK.value(),1); // 자바오브젝트를 JSON으로 변경(Jackson)
+	}
 	
 }
